@@ -8,6 +8,7 @@ package dns
 
 import (
 	"net"
+	"strings"
 	"sync"
 	"time"
 )
@@ -167,6 +168,7 @@ func ListenAndServe(addr string, network string, handler Handler) error {
 func (mux *ServeMux) match(q string, t uint16) Handler {
 	mux.m.RLock()
 	defer mux.m.RUnlock()
+	q = strings.ToLower(q)
 	var handler Handler
 	b := make([]byte, len(q)) // worst case, one label of length q
 	off := 0
